@@ -4,26 +4,14 @@ pipeline {
         maven 'maven381' 
     }
     stages {
-            stage('clean up') {
+        stage('maven test') {
             steps {
-                deleteDir()
-            }
-        }
-        stage('git clone') {
-            steps {
-                echo 'Hello World'
-                sh 'git clone https://github.com/Thumma123/simple-java-maven-app'
-            }
-        }
-        stage('mvn version') {
-            steps {
-                sh 'mvn --version'
-            }
-        }
-        stage('mvn test') {
-            steps {
-                dir("simple-java-maven-app"){
                 sh 'mvn test'
+            }
+        }
+        stage('mvn build') {
+            steps {
+                sh 'mvn build'
                 }
             }
         }

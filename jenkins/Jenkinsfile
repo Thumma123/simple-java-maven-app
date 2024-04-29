@@ -1,30 +1,32 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.0'
-            args '-v /root/.m2:/root/.m2'
-        }
+    agent any
+    tools {
+        maven 'maven381' 
     }
     stages {
-        stage('Build') {
+            stage('clean up') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                deleteDir()
             }
         }
-        stage('Test') {
+        stage('git clone') {
             steps {
+                echo 'Hello World'
+                sh 'git clone https://github.com/Thumma123/simple-java-maven-app'
+            }
+        }
+        stage('mvn version') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+        stage('mvn test') {
+            steps {
+                dir("simple-java-maven-app"){
                 sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
                 }
-            }
-        }
-        stage('Deliver') {
-            steps {
-                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
 }
+
